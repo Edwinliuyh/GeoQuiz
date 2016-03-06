@@ -21,6 +21,7 @@ public class QuizActivity extends Activity {
     ImageButton mPrevButton;
     Button mCheatButton;
     TextView mQuestionTextView;
+    private boolean mIsCheater;
     private static final String TAG="QuizActivity";
     private static final String KEY_INDEX="index";
 
@@ -99,9 +100,17 @@ public class QuizActivity extends Activity {
                 Intent i=new Intent(QuizActivity.this,CheatActivity.class);
                 boolean answerIsTrue=mAnswerKey[mCurrentIndex].isTrueQuestion();
                 i.putExtra(CheatActivity.EXTRA_ANSWER_IS_TRUE,answerIsTrue);
-                startActivity(i);
+                startActivityForResult(i,0);
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (data==null){
+            return;
+        }
+        mIsCheater=data.getBooleanExtra(CheatActivity.EXTRA_ANSWER_SHOWN,false);
     }
 
     @Override
@@ -151,6 +160,7 @@ public class QuizActivity extends Activity {
 
     private void nextIndex() {
         mCurrentIndex=(mCurrentIndex+1)%mAnswerKey.length;
+        mIsCheater=false;
     }
 
     private void updatQuestion() {
@@ -158,18 +168,21 @@ public class QuizActivity extends Activity {
         mQuestionTextView.setText(question);
     }
 
-    private void checkAnswer(boolean userPressTrue){
-        boolean answerIsTrue=mAnswerKey[mCurrentIndex].isTrueQuestion();
+    private void checkAnswer(boolean userPressTrue) {
+        boolean answerIsTrue = mAnswerKey[mCurrentIndex].isTrueQuestion();
 
-        int messageResId=0;
-        if (userPressTrue==answerIsTrue){
-            messageResId=R.string.correct_toast;
-        }else{
-            messageResId=R.string.incorrect_toast;
+        int messageResId = 0;
+        if (mIsCheater) {
+            messageResId = R.string.judgmet_toast;
+        } else {
+            if (userPressTrue == answerIsTrue) {
+                messageResId = R.string.correct_toast;
+            } else {
+                messageResId = R.string.incorrect_toast;
+            }
         }
-        Toast.makeText(this,messageResId,Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, messageResId, Toast.LENGTH_SHORT).show();
     }
-
 
 
 }
