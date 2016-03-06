@@ -11,4 +11,6 @@
     <string name="question_americas">亚马逊河是美国最长的河流。</string>
     <string name="question_asia">贝尔加湖是世界历史最悠久、最深的淡水湖。</string>
     <string name="prev_button">上一条题目</string>
+    <string name="previous">previous question</string>
+    <string name="next">next question</string>
 </resources>
