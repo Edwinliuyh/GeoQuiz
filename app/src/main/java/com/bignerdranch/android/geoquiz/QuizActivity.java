@@ -81,7 +81,11 @@ public class QuizActivity extends Activity {
     }
 
     private void prevIndex() {
-        mCurrentIndex=(mCurrentIndex-1)%mAnswerKey.length;
+        if (mCurrentIndex!=0){
+            mCurrentIndex=(mCurrentIndex-1)%mAnswerKey.length;
+        }else{
+            mCurrentIndex=mAnswerKey.length-1;
+        }
     }
 
     private void nextIndex() {
