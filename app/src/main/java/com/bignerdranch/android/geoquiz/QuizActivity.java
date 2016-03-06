@@ -24,6 +24,7 @@ public class QuizActivity extends Activity {
     private boolean mIsCheater;
     private static final String TAG="QuizActivity";
     private static final String KEY_INDEX="index";
+    private static final String KEY_IsCheater="isCheater";
 
     TrueFalse[] mAnswerKey = new TrueFalse[] {
             new TrueFalse(R.string.question_oceans, true),
@@ -44,6 +45,7 @@ public class QuizActivity extends Activity {
 //      从Bundle中恢复mCurrentIndex
         if (savedInstanceState!=null){
             mCurrentIndex=savedInstanceState.getInt(KEY_INDEX,0);
+            mIsCheater=savedInstanceState.getBoolean(KEY_IsCheater,false);
         }
 
         mQuestionTextView = (TextView)findViewById(R.id.question_text_view);
@@ -96,7 +98,7 @@ public class QuizActivity extends Activity {
         mCheatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //启动CheatActivity
+//                启动CheatActivity
                 Intent i=new Intent(QuizActivity.this,CheatActivity.class);
                 boolean answerIsTrue=mAnswerKey[mCurrentIndex].isTrueQuestion();
                 i.putExtra(CheatActivity.EXTRA_ANSWER_IS_TRUE,answerIsTrue);
@@ -105,6 +107,7 @@ public class QuizActivity extends Activity {
         });
     }
 
+//    接收子页面回传的intent，知道是否作弊
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (data==null){
@@ -118,6 +121,7 @@ public class QuizActivity extends Activity {
         super.onSaveInstanceState(savedInstanceState);
         Log.d(TAG,"onSaveInstanceState");
         savedInstanceState.putInt(KEY_INDEX,mCurrentIndex);
+        savedInstanceState.putBoolean(KEY_IsCheater,mIsCheater);
     }
 
     @Override

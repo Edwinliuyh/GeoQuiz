@@ -16,9 +16,12 @@ public class CheatActivity extends Activity{
             "com.bignerdranch.android.geoquiz.answer_is_true";
     public static final String EXTRA_ANSWER_SHOWN=
             "com.bignerdranch.android.geoquiz.answer_shown";
+    public static final String KEY_IS_ANSWER_SHOWN=
+            "com.bignerdranch.android.geoquiz.is_answer_shown";
     private boolean mAnswerIsTrue;
     private Button mShowAnswer;
     private TextView mAnswerTextView;
+    private boolean isAnswerShown;
 
     private void setAnswerShownResut(boolean isAnswerShown){
         Intent data= new Intent();
@@ -32,11 +35,18 @@ public class CheatActivity extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cheat);
 
+        isAnswerShown=false;
+
+//        从Bundle中恢复mCurrentIndex
+        if (savedInstanceState!=null){
+            isAnswerShown=savedInstanceState.getBoolean(KEY_IS_ANSWER_SHOWN,false);
+        }
+
+//      接收主页面intent
         mAnswerIsTrue=getIntent().getBooleanExtra(EXTRA_ANSWER_IS_TRUE,false);
 
         mAnswerTextView=(TextView)findViewById(R.id.answerTextView);
         mShowAnswer=(Button)findViewById(R.id.showAnswer);
-        setAnswerShownResut(false);
         mShowAnswer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -45,10 +55,17 @@ public class CheatActivity extends Activity{
                 }else{
                     mAnswerTextView.setText(R.string.false_button);
                 }
-                setAnswerShownResut(true);
+                isAnswerShown=true;
+                setAnswerShownResut(isAnswerShown);
             }
         });
 
 
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putBoolean(KEY_IS_ANSWER_SHOWN,isAnswerShown);
     }
 }
