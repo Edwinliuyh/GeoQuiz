@@ -32,8 +32,14 @@ public class QuizActivity extends Activity {
         setContentView(R.layout.activity_quiz);
 
         mQuestionTextView = (TextView)findViewById(R.id.question_text_view);
-        //set text to first question in array
         updatQuestion();
+        mQuestionTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nextIndex();
+                updatQuestion();
+            }
+        });
 
         mTrueButton = (Button)findViewById(R.id.true_button);
         mTrueButton.setOnClickListener(new View.OnClickListener() {
@@ -56,10 +62,14 @@ public class QuizActivity extends Activity {
 
             @Override
             public void onClick(View v) {
-                mCurrentIndex=(mCurrentIndex+1)%mAnswerKey.length;
+                nextIndex();
                 updatQuestion();
             }
         });
+    }
+
+    private void nextIndex() {
+        mCurrentIndex=(mCurrentIndex+1)%mAnswerKey.length;
     }
 
     private void updatQuestion() {
