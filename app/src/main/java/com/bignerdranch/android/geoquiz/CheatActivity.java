@@ -40,6 +40,7 @@ public class CheatActivity extends Activity{
 //        从Bundle中恢复mCurrentIndex
         if (savedInstanceState!=null){
             isAnswerShown=savedInstanceState.getBoolean(KEY_IS_ANSWER_SHOWN,false);
+            setAnswerShownResut(isAnswerShown);
         }
 
 //      接收主页面intent

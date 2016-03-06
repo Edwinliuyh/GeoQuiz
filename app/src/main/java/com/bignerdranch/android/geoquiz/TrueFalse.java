@@ -4,9 +4,7 @@ package com.bignerdranch.android.geoquiz;
  * Created by dell on 2016/3/6.
  */
 public class TrueFalse {
-    private int mQuestion;
-    // this variable will hold a resource ID for a string
-
+    private int mQuestion;// this variable will hold a resource ID for a string
     private boolean mTrueQuestion;
 
     public TrueFalse(int question, boolean trueQuestion) {
@@ -29,6 +27,5 @@ public class TrueFalse {
     public void setTrueQuestion(boolean trueQuestion) {
         mTrueQuestion = trueQuestion;
     }
-
 
 }

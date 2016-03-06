@@ -21,7 +21,6 @@ public class QuizActivity extends Activity {
     ImageButton mPrevButton;
     Button mCheatButton;
     TextView mQuestionTextView;
-    private boolean mIsCheater;
     private static final String TAG="QuizActivity";
     private static final String KEY_INDEX="index";
     private static final String KEY_IsCheater="isCheater";
@@ -34,6 +33,8 @@ public class QuizActivity extends Activity {
             new TrueFalse(R.string.question_asia, true)
     };
 
+    boolean []mIsCheater=new boolean[5];
+
     int mCurrentIndex = 0;
 
     @Override
@@ -45,7 +46,7 @@ public class QuizActivity extends Activity {
 //      从Bundle中恢复mCurrentIndex
         if (savedInstanceState!=null){
             mCurrentIndex=savedInstanceState.getInt(KEY_INDEX,0);
-            mIsCheater=savedInstanceState.getBoolean(KEY_IsCheater,false);
+            mIsCheater=savedInstanceState.getBooleanArray(KEY_IsCheater);
         }
 
         mQuestionTextView = (TextView)findViewById(R.id.question_text_view);
@@ -113,15 +114,16 @@ public class QuizActivity extends Activity {
         if (data==null){
             return;
         }
-        mIsCheater=data.getBooleanExtra(CheatActivity.EXTRA_ANSWER_SHOWN,false);
+        mIsCheater[mCurrentIndex]=data.getBooleanExtra(CheatActivity.EXTRA_ANSWER_SHOWN,false);
     }
 
+//    保存数据
     @Override
     protected void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
         Log.d(TAG,"onSaveInstanceState");
         savedInstanceState.putInt(KEY_INDEX,mCurrentIndex);
-        savedInstanceState.putBoolean(KEY_IsCheater,mIsCheater);
+        savedInstanceState.putBooleanArray(KEY_IsCheater,mIsCheater);
     }
 
     @Override
@@ -164,7 +166,6 @@ public class QuizActivity extends Activity {
 
     private void nextIndex() {
         mCurrentIndex=(mCurrentIndex+1)%mAnswerKey.length;
-        mIsCheater=false;
     }
 
     private void updatQuestion() {
@@ -176,7 +177,7 @@ public class QuizActivity extends Activity {
         boolean answerIsTrue = mAnswerKey[mCurrentIndex].isTrueQuestion();
 
         int messageResId = 0;
-        if (mIsCheater) {
+        if (mIsCheater[mCurrentIndex]) {
             messageResId = R.string.judgmet_toast;
         } else {
             if (userPressTrue == answerIsTrue) {
