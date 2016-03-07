@@ -2,6 +2,7 @@ package com.bignerdranch.android.geoquiz;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -22,6 +23,7 @@ public class CheatActivity extends Activity{
     private Button mShowAnswer;
     private TextView mAnswerTextView;
     private boolean isAnswerShown;
+    private TextView mshowAPI;
 
     private void setAnswerShownResut(boolean isAnswerShown){
         Intent data= new Intent();
@@ -61,6 +63,9 @@ public class CheatActivity extends Activity{
             }
         });
 
+        mshowAPI=(TextView)findViewById(R.id.showAPI);
+        CharSequence charSequence="API Level "+ Build.VERSION.SDK_INT;
+        mshowAPI.setText(charSequence);
 
     }
 
